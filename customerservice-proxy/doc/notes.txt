@@ -1,10 +1,19 @@
 
+questions
+- how to collect authorization input?
+  + can 
+  + Java class  
+
+
+TODO
+- parameterize backend service endpoint addresses
+
+DONE
+- migrate to Maven
+- packaging (exploded/archived, automate): OK 
 
 Proxy service endpoint addresses
 - see SOA-P / JBossESB Service List
 - e.g. http://127.0.0.1:8380/customerservice/http/koku/customerservice-proxy?wsdl
 
 
-TODO
-- packaging (exploded/archived, automate) 
-- parameterize backend service endpoint addresses

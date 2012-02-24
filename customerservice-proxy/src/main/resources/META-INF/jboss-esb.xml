@@ -2,17 +2,33 @@
 <jbossesb parameterReloadSecs="5"
   xmlns="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd">
+
   <services>
     <service category="koku" description="koku customerservice proxy" name="customerservice-proxy" invmScope="GLOBAL">
       <listeners>
         <http-gateway name="customerservice-listener" />
       </listeners>
       <actions>
+    
+        <action class="org.jboss.soa.esb.actions.BusinessRulesProcessor" name="BRP">
+          <property name="ruleSet" value="MyBusinessRules.drl" />
+          <property name="ruleReload" value="true" />
+          <property name="object-paths">
+            <object-path esb="body.orderHeader" />
+            <object-path esb="body.customer" />
+          </property>
+        </action>
+
+        <action class="fi.koku.esb.services.customer.AuthorizationActionProcessor" name="customerservice-proxy-authorizer-action">
+        </action>
+
         <action class="org.jboss.soa.esb.actions.soap.proxy.SOAPProxy" name="customerservice-proxy-action">
           <property name="wsdl"
             value="http://127.0.0.1:8180/customer-service-ear-0.0.1-SNAPSHOT-customer-service-0.0.1-SNAPSHOT/CustomerServiceEndpointBean?wsdl" />
         </action>
+
       </actions>
     </service>
   </services>
+
 </jbossesb>
