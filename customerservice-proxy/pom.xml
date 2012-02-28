@@ -6,7 +6,9 @@
   <name>customerservice-proxy</name>
 
   <properties>
+    <slf4j.version>1.6.1</slf4j.version>
     <jbossesb.version>4.9</jbossesb.version>
+    <jrebel.plugin.version>1.0.7</jrebel.plugin.version>
   </properties>
 
   <build>
@@ -44,10 +46,32 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.zeroturnaround</groupId>
+        <artifactId>jrebel-maven-plugin</artifactId>
+        <version>${jrebel.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>generate-rebel-xml</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
   <repositories>
+    <repository>
+      <id>ElasticService.com</id>
+      <name>ElasticService.com-releases</name>
+      <url>https://m2.elasticservice.com/artifactory/koku</url>
+    </repository>
+<!--
     <repository>
       <id>jboss-public-repository-group</id>
       <name>JBoss Public Repository Group</name>
@@ -62,11 +86,19 @@
         <updatePolicy>never</updatePolicy>
       </snapshots>
     </repository>
+-->
   </repositories>
 
   <dependencies>
     <dependency>
-      <groupId>org.jboss.soa.bpel.dependencies.esb</groupId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.jboss.soa.esb</groupId>
       <artifactId>jbossesb-rosetta</artifactId>
       <version>${jbossesb.version}</version>
       <scope>provided</scope>

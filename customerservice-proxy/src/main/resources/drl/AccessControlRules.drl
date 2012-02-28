@@ -1,0 +1,13 @@
+package fi.koku.esb.services.customer
+
+import fi.koku.esb.services.customer.Authorization;
+
+rule "authorization-rule-demo-1"
+when
+  # inspect input
+  authorization: Authorization(customerPic == "111111-1111")
+then
+  # make decision
+  authorization.setAllow(true);
+  System.out.println("a: "+authorization);
+end

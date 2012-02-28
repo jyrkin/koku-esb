@@ -8,26 +8,51 @@
       <listeners>
         <http-gateway name="customerservice-listener" />
       </listeners>
-      <actions>
-    
+
+      <actions mep="RequestResponse">
+<!-- 
+        <action class="org.jboss.soa.esb.actions.SystemPrintln" name="sp1">
+          <property name="message" value="msg1:"/>
+          <property name="printfull" value="true"/>
+        </action>
+ -->
+        <!-- extract data for access control checks from the message, don't change the input -->
+        <action name="transform" class="org.jboss.soa.esb.smooks.SmooksAction">
+          <property name="smooksConfig" value="/smooks/smooks-res.xml" />
+          <property name="resultType" value="JAVA" />
+          <property name="set-payload-location" value="authorizationPayload" />
+        </action>
+<!-- 
+        <action class="org.jboss.soa.esb.actions.SystemPrintln" name="sp2">
+          <property name="message" value="msg2:"/>
+          <property name="printfull" value="true"/>
+        </action>
+ -->
+        <!-- enrich the access control input data -->
+        <action class="fi.koku.esb.services.customer.AuthorizationPopulator" name="authorizationPopulator">
+        </action>
+
+        <!-- perform the actual access control check and mark the result -->
         <action class="org.jboss.soa.esb.actions.BusinessRulesProcessor" name="BRP">
-          <property name="ruleSet" value="MyBusinessRules.drl" />
+          <property name="ruleSet" value="drl/AccessControlRules.drl" />
           <property name="ruleReload" value="true" />
           <property name="object-paths">
-            <object-path esb="body.orderHeader" />
-            <object-path esb="body.customer" />
+            <object-path esb="body.authorization" />
           </property>
         </action>
-
-        <action class="fi.koku.esb.services.customer.AuthorizationActionProcessor" name="customerservice-proxy-authorizer-action">
+ 
+        <!-- enforce the access control check decision that was made previously -->
+        <action class="fi.koku.esb.services.customer.AuthorizationEnforcer" name="authorizationEnforcer">
         </action>
 
+        <!-- pass the request to backend, if authorized -->
         <action class="org.jboss.soa.esb.actions.soap.proxy.SOAPProxy" name="customerservice-proxy-action">
           <property name="wsdl"
             value="http://127.0.0.1:8180/customer-service-ear-0.0.1-SNAPSHOT-customer-service-0.0.1-SNAPSHOT/CustomerServiceEndpointBean?wsdl" />
         </action>
 
       </actions>
+
     </service>
   </services>
 

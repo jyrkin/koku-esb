@@ -1,8 +1,10 @@
 
 questions
 - how to collect authorization input?
-  + can 
-  + Java class  
+  + can rules access data directly from the message or does it need to be unmarshalled to a Java POJO?
+  	Smooks?
+  + if an error needs to be reported to the caller, should an action throw ActionProcessingException
+  	or return a null message or something else?
 
 
 TODO
