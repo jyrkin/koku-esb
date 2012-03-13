@@ -9,6 +9,7 @@
     <slf4j.version>1.6.1</slf4j.version>
     <jbossesb.version>4.9</jbossesb.version>
     <jrebel.plugin.version>1.0.7</jrebel.plugin.version>
+    <customerservice-api.version>0.0.26</customerservice-api.version>
   </properties>
 
   <build>
@@ -103,6 +104,13 @@
       <version>${jbossesb.version}</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>kohti-kumppanuutta</groupId>
+      <artifactId>customerservice-api</artifactId>
+      <version>${customerservice-api.version}</version>
+    </dependency>     
+
   </dependencies>
 
 </project>
