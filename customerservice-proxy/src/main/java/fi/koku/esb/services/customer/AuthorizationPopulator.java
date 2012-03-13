@@ -1,3 +1,10 @@
+/*
+ * Copyright 2011 Ixonos Plc, Finland. All rights reserved.
+ * 
+ * You should have received a copy of the license text along with this program.
+ * If not, please contact the copyright holder (http://www.ixonos.com/).
+ * 
+ */
 package fi.koku.esb.services.customer;
 
 import java.util.Arrays;
@@ -21,7 +28,7 @@ import static fi.koku.esb.services.customer.CustomerProxyConstants.*;
  * @author aspluma
  */
 public class AuthorizationPopulator extends AbstractActionPipelineProcessor {
-  private Logger logger = LoggerFactory.getLogger(AuthorizationPopulator.class);
+  private static final Logger logger = LoggerFactory.getLogger(AuthorizationPopulator.class);
   private static Map<String, List<String>> employeeOrgs = new HashMap<String, List<String>>();
   private static Map<String, List<String>> customerOrgs = new HashMap<String, List<String>>();
   private static Map<String, String> userRoles = new HashMap<String, String>();

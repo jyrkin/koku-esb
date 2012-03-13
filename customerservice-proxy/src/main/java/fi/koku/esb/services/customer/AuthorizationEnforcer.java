@@ -18,12 +18,16 @@ import org.slf4j.LoggerFactory;
  * @author aspluma
  */
 public class AuthorizationEnforcer extends AbstractActionPipelineProcessor {
-  private Logger logger = LoggerFactory.getLogger(AuthorizationEnforcer.class);
+  private static final Logger logger = LoggerFactory.getLogger(AuthorizationEnforcer.class);
   
 	public AuthorizationEnforcer(ConfigTree config) {
 		logger.debug("AuthorizationActionProcessor: config: "+config);
 	}
-	
+
+	/*
+	 * - return null
+	 * - throw ActionProcessingException
+	 */
 	public Message process(Message msg) throws ActionProcessingException {
 		logger.debug("AuthorizationEnforcer: process: "+msg);
 		
@@ -39,9 +43,11 @@ public class AuthorizationEnforcer extends AbstractActionPipelineProcessor {
       return null;
     }
 
+    logger.info(objs.get("destinations").toString());
+
+    
     if(!a.isAllow()) {
       logger.debug("deny");
-      return null;
     }
     logger.debug("allow");
 				
