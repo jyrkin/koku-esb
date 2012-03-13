@@ -33,27 +33,38 @@
         </action>
 
         <!-- perform the actual access control check and mark the result -->
-        <action class="org.jboss.soa.esb.actions.BusinessRulesProcessor" name="BRP">
+        <action class="org.jboss.soa.esb.actions.ContentBasedRouter" name="ContentBasedRouter">
           <property name="ruleSet" value="drl/AccessControlRules.drl" />
           <property name="ruleReload" value="true" />
+          <property name="destinations">
+            <route-to destination-name="CustomerServiceBackend" service-category="koku" service-name="CustomerServiceBackend" />
+            <route-to destination-name="DenyAccessService" service-category="koku" service-name="DenyAccessService" />
+          </property>
           <property name="object-paths">
             <object-path esb="body.authorization" />
           </property>
         </action>
- 
-        <!-- enforce the access control check decision that was made previously -->
-        <action class="fi.koku.esb.services.customer.AuthorizationEnforcer" name="authorizationEnforcer">
-        </action>
+      </actions>
 
+    </service>
+
+    <service name="DenyAccessService" description="bar" category="koku" invmScope="GLOBAL">
+      <actions mep="RequestResponse">
+        <action name="BlockAction" class="fi.koku.esb.services.customer.BlockAction">
+        </action>
+      </actions>
+    </service>
+    
+    <service name="CustomerServiceBackend" category="koku" description="foo" invmScope="GLOBAL">
+      <actions mep="RequestResponse">
         <!-- pass the request to backend, if authorized -->
         <action class="org.jboss.soa.esb.actions.soap.proxy.SOAPProxy" name="customerservice-proxy-action">
           <property name="wsdl"
             value="http://127.0.0.1:8180/customer-service-ear-0.0.1-SNAPSHOT-customer-service-0.0.1-SNAPSHOT/CustomerServiceEndpointBean?wsdl" />
         </action>
-
       </actions>
-
     </service>
+
   </services>
 
 </jbossesb>
