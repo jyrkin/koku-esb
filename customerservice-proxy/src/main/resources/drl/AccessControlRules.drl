@@ -9,7 +9,7 @@ rule "authorization-rule-demo-1"
 salience 10
 when
   # inspect input
-  authorization: Authorization(customerPic == "111111-1111")
+  authorization: Authorization(userInCustomerOrganization == true)
 then
   RuleLogger.debug("a: "+authorization);
   # pass on to backend

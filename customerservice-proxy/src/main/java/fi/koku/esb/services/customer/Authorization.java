@@ -10,6 +10,9 @@ package fi.koku.esb.services.customer;
 import java.io.Serializable;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Represent access control check input data and decision.
  * 
@@ -17,6 +20,7 @@ import java.util.List;
  */
 public class Authorization implements Serializable {
   private static final long serialVersionUID = 1L;
+  private static final Logger logger = LoggerFactory.getLogger(Authorization.class);
   private String customerPic;
   private String userPic;
   private String operation;
@@ -90,6 +94,20 @@ public class Authorization implements Serializable {
 
   public void setAllow(boolean allow) {
     this.allow = allow;
+  }
+  
+  public boolean getUserInCustomerOrganization() {
+    logger.debug("getUserInCustomerOrganization");
+    if(userPic != null && customerPic !=null && userOID != null && customerOID != null) {
+      for(String oid : userOID) {
+        if(customerOID.contains(oid)) {
+          logger.debug("match: "+oid);
+          return true;
+        }
+      }
+      
+    }
+    return false;
   }
 
 }
